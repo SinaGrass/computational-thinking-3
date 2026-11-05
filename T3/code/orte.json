@@ -1,0 +1,14 @@
+[
+    { "id": 1, "name": "Nullinsel", "lat": 0, "lon": 0, "temperatur": null},
+    { "id": 2, "name": "Prüfpunkt Ost", "lat": 0, "lon": 10, "temperatur": null },
+    { "id": 3, "name": "Schwäbisch Gmünd", "lat": 48.8, "lon": 9.79, "temperatur": 9.3 },
+    { "id": 4, "name": "Stuttgart", "lat": 48.7758, "lon": 9.1829, "temperatur": 10.0 },
+    { "id": 5, "name": "Kapstadt", "lat": -33.92, "lon": 18.42, "temperatur": 16.4 },
+    { "id": 6, "name": "Spitzbergen", "lat": 78.22, "lon": 15.63, "temperatur": -7.5 },
+    { "id": 7, "name": "Prüfpunkt Nord", "lat": 78.22, "lon": 25.63, "temperatur": null },
+    { "id": 8, "name": "NYC", "lat": 40.69, "lon": -74.1443092, "temperatur": 11.9 },
+    { "id": 9, "name": "Berlin", "lat": 52.52, "lon": 13.405, "temperatur": 10.1 },
+    { "id": 10, "name": "Tokyo", "lat": 35.6895, "lon": 139.6917, "temperatur": 15.6 },
+    { "id": 11, "name": "Sydney", "lat": -33.8688, "lon": 151.2093, "temperatur": 18.0 },
+    { "id": 12, "name": "Rio de Janeiro", "lat": -22.9068, "lon": -43.1729, "temperatur": 23.6 }
+]
