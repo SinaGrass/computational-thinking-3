@@ -36,3 +36,20 @@ function latZuY(lat, hoehe) {
 Hinweis: Im Abschnitt „Mein aktueller Code“ steht die Zeile `const AUSSCHNITT = ...`. 
 Die gab es in meinem Code vorher noch nicht. 
 Sie war als Vorgabe gedacht, welchen Ausschnitt ich haben will.
+
+
+
+### AUFGABE 2
+Jetzt soll ein Slider die Karte auf Schwäbisch Gmünd zoomen.
+
+- Neue Konstante: const ZOOMPUNKT = { lat: 48.8, lon: 9.79 };
+- Neue Funktion berechneAusschnitt(zoom, zoompunkt), die ein Objekt { west, ost, nord, sued } zurückgibt.
+- Bei zoom = 1 ist das die ganze Welt { west: -180, ost: 180, nord: 90, sued: -90 }.
+- Bei zoom = 9 ist der Ausschnitt 40 Grad breit und 20 Grad hoch.
+- Das 2:1-Format bleibt immer erhalten.
+- Der Zoompunkt bleibt auf der Karte an derselben Stelle (gleicher Pixel bei jedem Zoom).
+
+Prüfwerte: Bei zoom = 1 → Nullinsel (0, 0) bei x = 360, y = 180 (720 × 360).
+Bei jedem zoom → lonZuX(ZOOMPUNKT.lon, 720, ausschnitt) hat denselben Wert.
+
+Ausgabe: nur die neue Funktion und die Konstante.

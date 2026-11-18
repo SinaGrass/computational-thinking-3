@@ -6,6 +6,9 @@ const HOEHE_SVG = 360;
 const sliderBreite = document.querySelector("#breite");
 console.log(sliderBreite);
 
+// Aufgabe 2: zweiter Slider
+const sliderZoom = document.querySelector("#zoom");
+
 const AUSSCHNITT = { west: -10, ost: 30, nord: 65, sued: 45 };
 
 function lonZuX(lon, breite, ausschnitt = AUSSCHNITT) {
@@ -14,6 +17,29 @@ function lonZuX(lon, breite, ausschnitt = AUSSCHNITT) {
 
 function latZuY(lat, hoehe, ausschnitt = AUSSCHNITT) {
   return ((ausschnitt.nord - lat) / (ausschnitt.nord - ausschnitt.sued)) * hoehe;
+}
+
+// Aufgabe 2: Zoompunkt und Berechnung des Ausschnitts
+const ZOOMPUNKT = { lat: 48.8, lon: 9.79 };
+
+function berechneAusschnitt(zoom, zoompunkt = ZOOMPUNKT) {
+  const breiteGrad = 360 / zoom;
+  const hoeheGrad = 180 / zoom;
+
+  // Relative Position des Zoompunkts auf der ganzen Welt (0 bis 1)
+  const anteilX = (zoompunkt.lon + 180) / 360;
+  const anteilY = (90 - zoompunkt.lat) / 180;
+
+  // Ausschnitt so aufbauen, dass der Zoompunkt denselben Anteil behält
+  const west = zoompunkt.lon - anteilX * breiteGrad;
+  const nord = zoompunkt.lat + anteilY * hoeheGrad;
+
+  return {
+    west,
+    ost: west + breiteGrad,
+    nord,
+    sued: nord - hoeheGrad,
+  };
 }
 
 // const orte = [
@@ -41,7 +67,7 @@ for (const ort of orte) {
   console.log(ort.name, "→ x:", x, "y:", y);
 }
 
-// ===== NEU (aus T3): Platzierung der Ortsnamen =====
+// (aus T3): Platzierung der Ortsnamen 
 
 // Schriftgröße der Ortsnamen (wird auch im SVG verwendet)
 const SCHRIFTGROESSE = 11;
@@ -214,13 +240,14 @@ function vorschlag(kreis, breite, grad, abstand, mitLinie) {
 // Platziert alle Namen für eine Karte der Größe breite x hoehe und gibt zurück,
 // wo jeder Name (und ggf. seine Linie) steht. Weil sich die Karte mit dem Slider
 // ändert, wird das bei jedem Zeichnen neu berechnet.
-function platziereNamen(breite, hoehe) {
+// (Aufgabe 2): dritter Parameter ausschnitt
+function platziereNamen(breite, hoehe, ausschnitt) {
   // Kreise (Mittelpunkt und Radius, genau wie beim Zeichnen)
   const kreise = new Map();
   for (const ort of orte) {
     kreise.set(ort, {
-      x: lonZuX(ort.lon, breite),
-      y: latZuY(ort.lat, hoehe),
+      x: lonZuX(ort.lon, breite, ausschnitt), // NEU (Aufgabe 2)
+      y: latZuY(ort.lat, hoehe, ausschnitt), // NEU (Aufgabe 2)
       r: kreisRadius(ort),
     });
   }
@@ -317,10 +344,13 @@ function platziereNamen(breite, hoehe) {
 function zeichnen() {
   const breite = Number(sliderBreite.value);
   const hoehe = breite / 2;
+  // (Aufgabe 2): Zoom lesen und Ausschnitt berechnen
+  const zoom = Number(sliderZoom.value);
+  const ausschnitt = berechneAusschnitt(zoom);
   console.log("zeichnen");
 
-  // NEU: Positionen der Namen (und Linien) für die aktuelle Kartengröße
-  const beschriftungen = platziereNamen(breite, hoehe);
+  //Positionen der Namen (und Linien) für die aktuelle Kartengröße und den Ausschnitt
+  const beschriftungen = platziereNamen(breite, hoehe, ausschnitt);
 
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${breite}" height="${hoehe}">
   <rect width="${breite}" height="${hoehe}" fill="#f4f1ea" stroke="#222"/>`;
@@ -334,8 +364,8 @@ function zeichnen() {
   // }
 
   for (const ort of orte) {
-    const x = lonZuX(ort.lon, breite);
-    const y = latZuY(ort.lat, hoehe);
+    const x = lonZuX(ort.lon, breite, ausschnitt); // NEU (Aufgabe 2)
+    const y = latZuY(ort.lat, hoehe, ausschnitt); // NEU (Aufgabe 2)
     let radius = Math.abs(ort.temperatur);
     let farbe = "#c0392b";
     if (ort.temperatur < 0) {
@@ -345,7 +375,7 @@ function zeichnen() {
       radius = 4;
       farbe = "#999999";
     }
-    // NEU: Position des Namens (und ggf. Linie) aus der Platzierung oben
+    // Position des Namens (und ggf. Linie) aus der Platzierung oben
     const b = beschriftungen.get(ort);
     const linieSvg = b.linie
       ? `
@@ -366,4 +396,5 @@ function zeichnen() {
 
 
 sliderBreite.addEventListener("input", zeichnen);
+sliderZoom.addEventListener("input", zeichnen); // NEU (Aufgabe 2)
 zeichnen();
