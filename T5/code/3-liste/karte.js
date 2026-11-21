@@ -2,10 +2,11 @@
 // Hier bleibt nur, was Slider liest oder ins DOM schreibt.
 // Alles, was nur rechnet, liegt in Modulen.
 
-import { lonZuX, latZuY, zoomeAusschnitt } from "./projektion.js";
+import { lonZuX, latZuY, zoomeAusschnitt, orteImAusschnitt } from "./projektion.js";
 import { entfernung, orteImUmkreis, nachEntfernung } from "./entfernung.js";
 import { kreisRadius, kreisFarbe } from "./kreis.js";
 import { platziereNamen, SCHRIFTGROESSE } from "./beschriftung.js";
+
 
 const AUSSCHNITT = { west: -180, ost: 180, nord: 90, sued: -90 };
 const ZOOMPUNKT = { lat: 48.8, lon: 9.79 }; // Schwäbisch Gmünd
@@ -37,7 +38,9 @@ function zeichnen() {
   const ausschnitt = zoomeAusschnitt(AUSSCHNITT, ZOOMPUNKT, faktor);
   const radius = Number(sliderRadius.value);
   const imUmkreis = orteImUmkreis(orte, ZOOMPUNKT, radius);
-  const orteNachEntfernung = nachEntfernung(imUmkreis, ZOOMPUNKT);
+  const imAusschnitt = orteImAusschnitt(imUmkreis, ausschnitt);
+  const orteNachEntfernung = nachEntfernung(imAusschnitt, ZOOMPUNKT);
+
 
   radiusWert.textContent = radius + " km";
 

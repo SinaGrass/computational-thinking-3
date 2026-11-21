@@ -21,3 +21,15 @@ export function zoomeAusschnitt(ausschnitt, punkt, faktor) {
     sued: punkt.lat - (punkt.lat - ausschnitt.sued) / faktor,
   };
 }
+
+// Nur die Orte, deren Position im Ausschnitt liegt (der Rand zählt dazu).
+// filter gibt eine neue Liste zurück, orte bleibt, wie es ist.
+export function orteImAusschnitt(orte, ausschnitt) {
+  return orte.filter(
+    (ort) =>
+      ort.lon >= ausschnitt.west &&
+      ort.lon <= ausschnitt.ost &&
+      ort.lat <= ausschnitt.nord &&
+      ort.lat >= ausschnitt.sued
+  );
+}
